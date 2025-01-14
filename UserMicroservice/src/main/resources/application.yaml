@@ -1,0 +1,26 @@
+server:
+  port: 8082
+spring:
+  r2dbc:
+    username: postgres
+    password: 1234
+    url: r2dbc:postgresql://localhost:5432/test
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  sql:
+    init:
+      platform: postgresql
+      mode: always
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+logging:
+  level:
+    root: INFO
+  file:
+    name: /Users/mryhnwbyzqy/Desktop/Auction/AuctionService/user-service.log
+
