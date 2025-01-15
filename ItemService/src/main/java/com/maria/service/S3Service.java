@@ -31,17 +31,4 @@ public class S3Service {
         ))
                 .thenReturn("https://" + bucket + ".s3.eu-north-1.amazonaws.com/" + key);
     }
-
-    /*
-    public Mono<byte []> getDataFromS3(String bucket, String key) {
-        GetObjectRequest objectRequest = GetObjectRequest.builder()
-                .bucket(bucket)
-                .key(key)
-                .build();
-        return Mono.fromFuture( s3Client.getObject(objectRequest, AsyncResponseTransformer.toBytes()))
-                .map(BytesWrapper::asByteArray);
-
-    }
-
-     */
 }
