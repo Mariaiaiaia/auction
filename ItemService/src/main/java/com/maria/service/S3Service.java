@@ -29,6 +29,6 @@ public class S3Service {
                         .build(),
                 AsyncRequestBody.fromBytes(file)
         ))
-                .thenReturn("https://" + bucket + ".s3.eu-north-1.amazonaws.com/" + key);
+                .thenReturn(**url);
     }
 }
