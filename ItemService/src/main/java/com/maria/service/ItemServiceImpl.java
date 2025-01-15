@@ -63,7 +63,7 @@ public class ItemServiceImpl implements ItemService {
     public Mono<ItemDTO> createItem(CreateItemRequest itemRequest, Long sellerId, byte[] file){
         String key = UUID.randomUUID().toString();
 
-        return s3Service.uploadDataToS3("auction-item", key, file)
+        return s3Service.uploadDataToS3("bucketName", key, file)
                 .flatMap(imgUrl -> itemRepository.save(Item.builder()
                         .itemName(itemRequest.getItemName())
                         .description(itemRequest.getDescription())
