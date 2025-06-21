@@ -1,0 +1,44 @@
+server:
+  port: 8083
+
+spring:
+  r2dbc:
+    username: test
+    password: test
+    url: r2dbc:postgresql://postgres:5432/testdb
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  sql:
+    init:
+      platform: postgresql
+      mode: always
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  redis:
+    host: redis
+    port: 6379
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        r2dbc: DEBUG
+  file:
+    name: ./logs/security-service.log
+
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+url:
+  user: http://userservice:8082/
+
+config:
+  properties-insync-rep: min.insync.replicas
+  replicas-num: 1
+

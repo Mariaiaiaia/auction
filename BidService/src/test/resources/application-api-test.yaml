@@ -1,0 +1,47 @@
+server:
+  port: 8087
+spring:
+  r2dbc:
+    username: test
+    password: test
+    url: r2dbc:postgresql://postgres:5432/testdb
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  sql:
+    init:
+      platform: postgresql
+      mode: always
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  kafka:
+    bootstrap-servers: kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: /Users/mryhnwbyzqy/Desktop/Auction/AuctionService/bid-service.log
+    org:
+      springframework:
+        r2dbc: DEBUG
+
+url:
+  auction-service: http://auctionservice:8084
+
+bootstrap-servers-config: kafka:9092
+kafka-group-id:
+  auction: auction-consumer-group
+uri:
+  get-seller: /auctions/get_seller/{id}

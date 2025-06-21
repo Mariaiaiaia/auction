@@ -1,0 +1,18 @@
+spring:
+  sql:
+    init:
+      mode: always
+  cloud:
+    aws:
+      credentials:
+        access-key: test
+        secret-key: test
+      s3:
+        endpoint: http://localhost:4566
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG
+    io:
+      r2dbc: DEBUG

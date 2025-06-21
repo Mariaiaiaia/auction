@@ -1,0 +1,57 @@
+server:
+  port: 8084
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  r2dbc:
+    username: test
+    password: test
+    url: r2dbc:postgresql://postgres:5432/testdb
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  redis:
+    host: localhost
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+      accept-single-value-as-array: true
+    default-property-inclusion: non_null
+    mapper:
+      accept-case-insensitive-properties: true
+
+
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: INFO
+  file:
+    name: /Users/mryhnwbyzqy/Desktop/Auction/AuctionService/auction-service.log
+kafka-group-id:
+  bid: bid-consumer-group
+  acceptance: acceptance-consumer-group
+
+bootstrap-servers-config: localhost:9092

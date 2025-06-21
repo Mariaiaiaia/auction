@@ -1,0 +1,48 @@
+server:
+  port: 8088
+
+spring:
+  r2dbc:
+    username: postgres
+    password: 1234
+    url: r2dbc:postgresql://localhost:5432/test
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  sql:
+    init:
+      platform: postgresql
+      mode: always
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: notification-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: /Users/mryhnwbyzqy/Desktop/Auction/AuctionService/invitation-service.log
+    org:
+      springframework:
+        r2dbc: DEBUG
+
+kafka-group-id:
+  invitation: invitation-consumer-group
+bootstrap-servers-config: localhost:9092

@@ -1,0 +1,69 @@
+server:
+  port: 8084
+spring:
+  r2dbc:
+    username: test
+    password: test
+    url: r2dbc:postgresql://postgres:5432/testdb
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  redis:
+    host: redis
+    port: 6379
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+      accept-single-value-as-array: true
+    default-property-inclusion: non_null
+    mapper:
+      accept-case-insensitive-properties: true
+
+  sql:
+    init:
+      platform: postgresql
+      mode: always
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+logging:
+  level:
+    root: INFO
+
+  file:
+    name: ./logs/auction-service.log
+url:
+  item-service: http://itemservice:8085
+  user-service: http://userservice:8082
+uri:
+  get-seller: /items/get_seller/{id}
+  find-user: /users/find_user/{userEmail}
+kafka-group-id:
+  bid: bid-consumer-group
+  acceptance: acceptance-consumer-group
+bootstrap-servers-config: kafka:9092
+
+
+
+
+
+

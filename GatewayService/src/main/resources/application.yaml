@@ -1,0 +1,54 @@
+spring:
+  application:
+  name: GatewayService
+  cloud:
+    gateway:
+      default-filters:
+        - name: DedupeResponseHeader
+          args:
+            name: Access-Control-Allow-Credentials
+            strategy: RETAIN_UNIQUE
+  redis:
+    host: redis
+    port: 6379
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+  password:
+    encoder:
+      secret: FZK2DZ82odqS13e8aENggaMbb_fAkl-nJL4AEVBX43g
+      iteration: 64
+      keylength: 256
+  #secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  #expiration: 3600
+
+server:
+  port: 8081
+
+uri:
+  item-service: http://itemservice:8085
+  user-service: http://userservice:8082
+  security-service: http://securityservice:8083
+  auction-service: http://auctionservice:8084
+  notification-service: http://notificationservice:8086
+  bid-service: http://bidservice:8087
+  invitation-service: http://invitationservice:8088
+
+path:
+  user:
+    register: /users/register
+    service: /users/**
+  security:
+    login: /api/login
+    logout: /api/logout
+  item:
+    service: /items/**
+  auction:
+    service: /auctions/**
+  notification:
+    service: /notifications/**
+  bid:
+    service: /bids/**
+  invitation:
+    service: /invitations/**
+

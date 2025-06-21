@@ -1,0 +1,14 @@
+spring:
+  sql:
+    init:
+      mode: always
+harryUserId: 1
+
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG
+    io:
+      r2dbc: DEBUG
+

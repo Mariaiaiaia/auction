@@ -1,0 +1,38 @@
+server:
+  port: 8086
+spring:
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  data:
+    mongodb:
+      uri: mongodb://mongo:27017/testdb
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: /Users/mryhnwbyzqy/Desktop/Auction/NotificationService/notification-service.log
+
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+url:
+  bid-service: http://bidservice:8087
+  bid-service-find-users: /bids/bidders_id/{auctionId}
+
+bootstrap-servers-config: kafka:9092
+
+key-deserializer-class-config: org.apache.kafka.common.serialization.StringDeserializer
+value-deserializer-class-config: org.springframework.kafka.support.serializer.JsonDeserializer
+kafka-group-id:
+  notification: notification-group
+  auction: auction-consumer-group
+

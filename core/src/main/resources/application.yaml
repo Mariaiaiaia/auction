@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: core
+
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+  password:
+    encoder:
+      secret: 5e67711c676ad07bfdbff917a27a52adc0ddaf6c1c4e15a8f5f2c74a59abc269
+      iteration: 64
+      keylength: 256
+

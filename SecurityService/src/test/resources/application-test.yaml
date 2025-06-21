@@ -1,0 +1,21 @@
+spring:
+  sql:
+    init:
+      mode: always
+  redis:
+    host: redis
+    port: 6379
+
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG
+    io:
+      r2dbc: DEBUG
+jwt:
+  secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
+  expiration: 3600
+
+url:
+  user: http://userservice:8082/

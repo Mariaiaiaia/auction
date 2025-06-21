@@ -1,0 +1,166 @@
+
+services:
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_BROKER_ID=1
+    ports:
+      - "9093:9092"
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    restart: "no"
+    container_name: zookeeper
+    ports:
+      - "2182:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=testdb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  userservice:
+    image: userservice:latest
+    container_name: test_userservice
+    build: ./UserService
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_CONFIG_LOCATION=classpath:/application-docker.yml
+    depends_on:
+      - postgres
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning
+
+  securityservice:
+    image: securityservice:latest
+    container_name: test_securityservice
+    build: ./SecurityService
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+    depends_on:
+      - userservice
+      - redis
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    environment:
+      MONGO_INITDB_DATABASE: testdb
+  notificationservice:
+    image: notificationservice:latest
+    container_name: test_notificationservice
+    build: ./NotificationService
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+    depends_on:
+      - kafka
+      - mongo
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=us-east-1
+      - DEBUG=1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    ports:
+      - '4566:4566'
+    volumes:
+      - ./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
+  itemservice:
+    image: itemservice:latest
+    container_name: test_itemservice
+    build: ./ItemService
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+    depends_on:
+      - postgres
+      - localstack
+  auctionservice:
+    image: auctionservice:latest
+    container_name: test_auctionservice
+    build: ./AuctionService
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+      - TZ=Asia/Jerusalem
+    depends_on:
+      - postgres
+      - userservice
+      - itemservice
+      - redis
+      - kafka
+  invitationservice:
+    image: invitationservice:latest
+    container_name: test_invitationservice
+    build: ./InvitationService
+    ports:
+      - "8088:8088"
+    environment:
+      - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+      - TZ=Asia/Jerusalem
+    depends_on:
+      - kafka
+  bidservice:
+    image: bidservice:latest
+    container_name: test_bidservice
+    build: ./BidService
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+      - TZ=Asia/Jerusalem
+    depends_on:
+      - kafka
+  gatewayservice:
+    image: gatewayservice:latest
+    container_name: test_gatewayservice
+    build: ./GatewayService
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+      - TZ=Asia/Jerusalem
+    depends_on:
+      - redis
+      - securityservice
+      - userservice
+      - auctionservice
+      - bidservice
+      - itemservice
+      - notificationservice
+      - invitationservice
+
