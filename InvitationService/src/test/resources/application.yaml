@@ -37,8 +37,6 @@ jwt:
 logging:
   level:
     root: INFO
-  file:
-    name: /Users/mryhnwbyzqy/Desktop/Auction/AuctionService/invitation-service.log
     org:
       springframework:
         r2dbc: DEBUG

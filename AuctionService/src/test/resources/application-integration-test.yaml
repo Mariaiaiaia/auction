@@ -47,11 +47,9 @@ logging:
   level:
     org:
       springframework:
-        r2dbc: INFO
-  file:
-    name: /Users/mryhnwbyzqy/Desktop/Auction/AuctionService/auction-service.log
+        r2dbc: DEBUG
 kafka-group-id:
-  bid: bid-consumer-group
+  bid: auction-test-bid-consumer-group
   acceptance: acceptance-consumer-group
 
 bootstrap-servers-config: localhost:9092

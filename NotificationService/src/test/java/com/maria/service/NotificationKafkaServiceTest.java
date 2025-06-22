@@ -35,7 +35,6 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 @ActiveProfiles("integration-test")
 @SpringBootTest(classes = NotificationsServiceApplication.class)
 @Testcontainers

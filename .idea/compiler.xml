@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="KafkaTemplate" />
       </profile>
       <profile name="Annotation profile for InvitationService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -28,7 +27,6 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="RedisService" />
         <module name="core" />
       </profile>
       <profile name="Annotation profile for GatewayService" enabled="true">
@@ -49,7 +47,7 @@
         </processorPath>
         <module name="NotificationService" />
       </profile>
-      <profile name="Annotation profile for ItemMicroservice" enabled="true">
+      <profile name="Annotation profile for UserMicroservice" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -61,12 +59,14 @@
         </processorPath>
         <module name="ItemService" />
         <module name="BidService" />
-        <module name="AuctionService" />
         <module name="UserService" />
+        <module name="AuctionService" />
         <module name="SecurityService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="KafkaTemplate" target="17" />
+      <module name="RedisService" target="17" />
       <module name="UserMicroservice" target="17" />
     </bytecodeTargetLevel>
   </component>

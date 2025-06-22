@@ -48,8 +48,6 @@ jwt:
 logging:
   level:
     root: INFO
-  file:
-    name: /Users/mryhnwbyzqy/Desktop/Auction/AuctionService/auction-service.log
 url:
   item-service: http://itemservice:8085
   user-service: http://userservice:8082

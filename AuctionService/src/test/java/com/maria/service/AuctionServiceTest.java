@@ -1,8 +1,6 @@
 package com.maria.service;
 
-
 import com.maria.AuctionServiceApplication;
-import com.maria.constant.AuctionServiceEventConstants;
 import com.maria.core.entity.*;
 import com.maria.entity.Auction;
 import com.maria.mapper.AuctionMapper;
@@ -45,12 +43,6 @@ import java.util.Map;
 @Testcontainers
 @SpringBootTest(classes = AuctionServiceApplication.class)
 public class AuctionServiceTest {
-    private ReactiveKafkaConsumerTemplate<String, NewBitEvent> bitConsumerTemplate;
-    private ReactiveKafkaConsumerTemplate<String, AcceptanceEvent> acceptanceConsumerTemplate;
-    private ReactiveKafkaProducerTemplate<String, InvitationEvent> invitationProducerTemplate;
-    private ReactiveKafkaProducerTemplate<String, AuctionItemEvent> removeAuctionProducerTemplate;
-    private ReactiveKafkaProducerTemplate<String, Notification> notificationProducerTemplate;
-    private ReactiveKafkaProducerTemplate<String, AuctionItemEvent> createAuctionProducerTemplate;
     private ReactiveKafkaProducerTemplate<String, NewBitEvent> bidProducerTemplate;
     private ReactiveKafkaProducerTemplate<String, AcceptanceEvent> acceptanceProducerTemplate;
     @Autowired
@@ -86,6 +78,7 @@ public class AuctionServiceTest {
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.springframework.kafka.support.serializer.JsonDeserializer");
         consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, targetType.getName());
+        consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
 
         ReceiverOptions<String, T> receiverOptions = ReceiverOptions.<String, T>create(consumerProps)
                 .subscription(Collections.singleton(topic));
@@ -105,15 +98,7 @@ public class AuctionServiceTest {
 
     @BeforeEach
     private void setup() {
-        this.notificationProducerTemplate = createReactiveKafkaProducerTemplate();
-        this.removeAuctionProducerTemplate = createReactiveKafkaProducerTemplate();
-        this.createAuctionProducerTemplate = createReactiveKafkaProducerTemplate();
-        this.invitationProducerTemplate = createReactiveKafkaProducerTemplate();
         this.bidProducerTemplate = createReactiveKafkaProducerTemplate();
-        this.bitConsumerTemplate = createReactiveKafkaConsumerTemplate
-                (AuctionServiceEventConstants.NEW_BID, NewBitEvent.class, "bid-consumer-group");
-        this.acceptanceConsumerTemplate = createReactiveKafkaConsumerTemplate
-                (AuctionServiceEventConstants.ACCEPTANCE, AcceptanceEvent.class, "acceptance-consumer-group");
         this.acceptanceProducerTemplate = createReactiveKafkaProducerTemplate();
 
         auctionRepository.deleteAll().block();
@@ -128,7 +113,7 @@ public class AuctionServiceTest {
                     (102, 2, 150.00, 150.00, NULL, '2025-04-14 09:00:00', '2025-06-18 15:00:00', false, true),
                     (103, 1, 200.00, 200.00, NULL, NOW() + INTERVAL '30 minutes', NOW() + INTERVAL '55 minutes', false, false),
                     (104, 1, 300.00, 350.00, 5, '2025-04-12 15:00:00', '2025-06-18 15:00:00', false, true),
-                    (105, 2, 80.00, 90.00, 6, '2025-04-15 12:00:00', '2025-06-19 18:00:00', false, false);
+                    (105, 2, 80.00, 90.00, 6, '2025-04-15 12:00:00', '2025-06-23 18:00:00', false, false);
                 """).fetch().rowsUpdated().block();
     }
 
@@ -198,6 +183,7 @@ public class AuctionServiceTest {
         assert auction != null;
         Long auctionId = auction.getAuctionId();
 
+
         String key = "auctions:" + auctionId;
         valueOperationsAuction.set(key, auctionMapper.toDto(auction)).block();
 
@@ -217,7 +203,7 @@ public class AuctionServiceTest {
         AuctionDTO redisUpdatedAuction = valueOperationsAuction.get(key).block();
         Assertions.assertEquals(0, redisUpdatedAuction.getCurrentPrice().compareTo(bidValue));
 
-        StepVerifier.create(auctionRepository.findById(auction.getAuctionId()))
+        StepVerifier.create(auctionRepository.findById(auctionId))
                 .assertNext(repoUpdatedAuction -> {
                     Assertions.assertEquals(0, repoUpdatedAuction.getCurrentPrice().compareTo(bidValue));
                 })

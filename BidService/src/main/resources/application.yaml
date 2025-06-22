@@ -41,7 +41,7 @@ url:
 
 bootstrap-servers-config: kafka:9092
 kafka-group-id:
-  auction: auction-consumer-group
+  auction: test-auction-consumer-group
 uri:
   get-seller: /auctions/get_seller/{id}
 
