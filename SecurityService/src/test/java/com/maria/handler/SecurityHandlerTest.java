@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SecurityHandlerIT {
+public class SecurityHandlerTest {
     private String jwtSecret = "9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d";
 
     public String generateToken(Long userId, String userRole) {
