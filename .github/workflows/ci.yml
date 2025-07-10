@@ -84,8 +84,8 @@ jobs:
 
       - name: Run service tests
         run: |
-          cd core && mvn install -DskipTests && cd AuctionService
-          mvn verify -Dtest=*ServiceTest
+          cd core && mvn install -DskipTests && cd ..
+          cd AuctionService && mvn verify -Dtest=*ServiceTest
 
   api-tests:
     name: Run API tests with docker-compose
