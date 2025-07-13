@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.http.MediaType;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.ActiveProfiles;
@@ -33,12 +34,15 @@ public class AuctionHandlerTest {
     private DatabaseClient databaseClient;
     private String jwtSecret = "9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d";
 
+
     @BeforeAll
     void setUp() {
         auctionWebTestClient = WebTestClient.bindToServer()
                 .baseUrl("http://localhost:8084")
                 .build();
     }
+
+
 
     public String generateToken(Long userId, String userRole) {
         Map<String, Object> claims = new HashMap<>();

@@ -2,7 +2,7 @@ server:
   port: 8084
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    #bootstrap-servers: localhost:9092
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -52,4 +52,4 @@ kafka-group-id:
   bid: auction-test-bid-consumer-group
   acceptance: acceptance-consumer-group
 
-bootstrap-servers-config: localhost:9092
+#bootstrap-servers-config: localhost:9092
