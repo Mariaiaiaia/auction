@@ -22,6 +22,7 @@ import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -42,6 +43,7 @@ import java.util.Map;
 @ActiveProfiles("integration-test")
 @Testcontainers
 @SpringBootTest(classes = AuctionServiceApplication.class)
+@TestPropertySource(properties = {"spring.kafka.bootstrap-servers="})
 public class AuctionServiceTest {
     private ReactiveKafkaProducerTemplate<String, NewBitEvent> bidProducerTemplate;
     private ReactiveKafkaProducerTemplate<String, AcceptanceEvent> acceptanceProducerTemplate;
