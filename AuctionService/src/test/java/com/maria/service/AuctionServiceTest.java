@@ -43,7 +43,6 @@ import java.util.Map;
 @ActiveProfiles("integration-test")
 @Testcontainers
 @SpringBootTest(classes = AuctionServiceApplication.class)
-@TestPropertySource(properties = {"spring.kafka.bootstrap-servers="})
 public class AuctionServiceTest {
     private ReactiveKafkaProducerTemplate<String, NewBitEvent> bidProducerTemplate;
     private ReactiveKafkaProducerTemplate<String, AcceptanceEvent> acceptanceProducerTemplate;
