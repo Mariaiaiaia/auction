@@ -37,6 +37,13 @@ jobs:
             cd $d && mvn clean package -DskipTests && cd ..
           done
 
+      - name: Upload JARs
+        uses: actions/upload-artifact@v4
+        with:
+          name: jars
+          path: |
+            **/target/*.jar
+
   unit-tests:
     name: Run unit tests
     runs-on: ubuntu-latest
@@ -107,17 +114,14 @@ jobs:
           curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
 
-      - name: Build all services
-        run: |
-          cd core && mvn clean package -DskipTests && cd ..
-          cd UserService && mvn clean package -DskipTests && cd ..
-          cd BidService && mvn clean package -DskipTests && cd ..
-          cd ItemService && mvn clean package -DskipTests && cd ..
-          cd NotificationService && mvn clean package -DskipTests && cd ..
-          cd InvitationService && mvn clean package -DskipTests && cd ..
-          cd AuctionService && mvn clean package -DskipTests && cd ..
-          cd SecurityService && mvn clean package -DskipTests && cd ..
-          cd GatewayService && mvn clean package -DskipTests && cd ..
+      - name: Download JARs
+        uses: actions/download-artifact@v4
+        with:
+          name: jars
+          path: .
+
+      - name: Show JARs
+        run: ls -R
 
       - name: Start services with docker-compose
         run: |
