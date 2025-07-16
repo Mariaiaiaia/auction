@@ -40,7 +40,7 @@ public class AuctionKafkaServiceImpl implements AuctionKafkaService {
     private String kafkaBidGroup;
     @Value("${kafka-group-id.acceptance}")
     private String kafkaAcceptanceGroup;
-    @Value("${bootstrap-servers-config}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServersConfig;
 
     public <T> ReactiveKafkaProducerTemplate<String, T> createReactiveKafkaProducerTemplate() {
