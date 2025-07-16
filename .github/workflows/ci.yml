@@ -109,15 +109,15 @@ jobs:
 
       - name: Build all services
         run: |
-          - cd core && mvn clean package -DskipTests && cd ..
-          - cd UserService && mvn clean package -DskipTests && cd ..
-          - cd BidService && mvn clean package -DskipTests && cd ..
-          - cd ItemService && mvn clean package -DskipTests && cd ..
-          - cd NotificationService && mvn clean package -DskipTests && cd ..
-          - cd InvitationService && mvn clean package -DskipTests && cd ..
-          - cd AuctionService && mvn clean package -DskipTests && cd ..
-          - cd SecurityService && mvn clean package -DskipTests && cd ..
-          - cd GatewayService && mvn clean package -DskipTests && cd ..
+          cd core && mvn clean package -DskipTests && cd ..
+          cd UserService && mvn clean package -DskipTests && cd ..
+          cd BidService && mvn clean package -DskipTests && cd ..
+          cd ItemService && mvn clean package -DskipTests && cd ..
+          cd NotificationService && mvn clean package -DskipTests && cd ..
+          cd InvitationService && mvn clean package -DskipTests && cd ..
+          cd AuctionService && mvn clean package -DskipTests && cd ..
+          cd SecurityService && mvn clean package -DskipTests && cd ..
+          cd GatewayService && mvn clean package -DskipTests && cd ..
 
       - name: Start services with docker-compose
         run: |
