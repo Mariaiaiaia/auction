@@ -132,7 +132,7 @@ jobs:
       - name: Wait for Kafka port
         run: |
           for i in {1..30}; do
-            nc -z localhost 9092 && echo "Kafka is ready!" && exit 0
+            nc -z kafka 9092 && echo "Kafka is ready!" && exit 0
             echo "Waiting for Kafka ($i)..."
             sleep 2
           done
