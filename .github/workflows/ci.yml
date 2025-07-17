@@ -131,6 +131,7 @@ jobs:
 
       - name: Run API tests
         run: |
+          export TZ=Asia/Jerusalem
           docker-compose ps
           docker-compose logs auctionservice
           cd core && mvn clean install -DskipTests && cd ..
