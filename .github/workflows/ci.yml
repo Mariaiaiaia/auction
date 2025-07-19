@@ -125,9 +125,9 @@ jobs:
 
       - name: Start services with docker-compose
         run: |
-          docker-compose -f docker-compose.yaml build --build-arg BUILDKIT_INLINE_CACHE=1
+          docker-compose -f docker-compose.yaml build --build-arg
           docker-compose -f docker-compose.yaml up -d
-          sleep 320
+          sleep 120
           
 
       - name: Run API tests

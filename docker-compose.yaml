@@ -9,7 +9,7 @@ services:
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
       - KAFKA_CFG_BROKER_ID=1
     ports:
-      - "9093:9092"
+      - "9092:9092"
     depends_on:
       - zookeeper
 
@@ -18,7 +18,7 @@ services:
     restart: "no"
     container_name: zookeeper
     ports:
-      - "2182:2181"
+      - "2181:2181"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
@@ -116,6 +116,7 @@ services:
       - "8084:8084"
     environment:
       - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - TZ=Asia/Jerusalem
     depends_on:
       - postgres
