@@ -127,7 +127,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.yaml build --build-arg BUILDKIT_INLINE_CACHE=1
           docker-compose -f docker-compose.yaml up -d
-          sleep 220
+          sleep 320
           
 
       - name: Run API tests
