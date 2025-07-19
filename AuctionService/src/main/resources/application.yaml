@@ -33,7 +33,7 @@ spring:
       repositories:
         enabled: true
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: localhost:9092
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -60,7 +60,7 @@ uri:
 kafka-group-id:
   bid: bid-consumer-group
   acceptance: acceptance-consumer-group
-bootstrap-servers-config: kafka:9092
+bootstrap-servers-config: localhost:9092
 
 
 
