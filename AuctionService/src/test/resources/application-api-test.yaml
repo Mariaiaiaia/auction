@@ -47,7 +47,7 @@ jwt:
   expiration: 3600
 logging:
   level:
-    root: INFO
+    root: DEBUG
 url:
   item-service: http://itemservice:8085
   user-service: http://userservice:8082

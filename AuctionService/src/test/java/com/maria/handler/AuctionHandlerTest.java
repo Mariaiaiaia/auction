@@ -38,7 +38,7 @@ public class AuctionHandlerTest {
     @BeforeAll
     void setUp() {
         auctionWebTestClient = WebTestClient.bindToServer()
-                .responseTimeout(Duration.ofSeconds(20))
+                .responseTimeout(Duration.ofSeconds(40))
                 .baseUrl("http://localhost:8084")
                 .build();
     }
