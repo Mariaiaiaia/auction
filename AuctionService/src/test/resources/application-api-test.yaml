@@ -58,4 +58,4 @@ kafka-group-id:
   bid: bid-consumer-group
   acceptance: acceptance-consumer-group
 
-bootstrap-servers-config: kafka:9092
+bootstrap-servers-config: localhost:9092
