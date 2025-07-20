@@ -135,6 +135,7 @@ jobs:
           export TZ=Asia/Jerusalem
           docker ps -a
           docker compose -f ./docker-compose.yaml ps
+          docker logs kafka || true
           docker-compose logs auctionservice
           cd core && mvn clean install -DskipTests && cd ..
           cd AuctionService && mvn verify -Dtest=*HandlerTest
