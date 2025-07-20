@@ -125,7 +125,7 @@ jobs:
 
       - name: Start services with docker-compose
         run: |
-          docker-compose -f docker-compose.yaml build --build-arg
+          docker-compose -f docker-compose.yaml build 
           docker-compose -f docker-compose.yaml up -d
           sleep 120
           
