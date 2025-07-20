@@ -133,7 +133,8 @@ jobs:
       - name: Run API tests
         run: |
           export TZ=Asia/Jerusalem
-          docker-compose ps
+          docker ps -a
+          docker compose -f ./docker-compose.yaml ps
           docker-compose logs auctionservice
           cd core && mvn clean install -DskipTests && cd ..
           cd AuctionService && mvn verify -Dtest=*HandlerTest
