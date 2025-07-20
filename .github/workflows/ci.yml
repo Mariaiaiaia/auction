@@ -127,7 +127,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.yaml build 
           docker-compose -f docker-compose.yaml up -d
-          sleep 120
+          sleep 100
           
 
       - name: Run API tests
