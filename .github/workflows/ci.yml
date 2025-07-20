@@ -136,7 +136,7 @@ jobs:
           docker ps -a
           docker compose -f ./docker-compose.yaml ps
           docker logs kafka || true
-          docker logs bitnami/zookeeper || true
+          docker logs auction-zookeeper-1 || true
           docker-compose logs auctionservice
           cd core && mvn clean install -DskipTests && cd ..
           cd AuctionService && mvn verify -Dtest=*HandlerTest
