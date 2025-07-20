@@ -60,7 +60,6 @@ uri:
 kafka-group-id:
   bid: bid-consumer-group
   acceptance: acceptance-consumer-group
-bootstrap-servers-config: localhost:9092
 
 
 
