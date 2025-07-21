@@ -87,6 +87,7 @@ services:
       - "8086:8086"
     environment:
       - SPRING_CONFIG_LOCATION=classpath:/application.yaml
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     depends_on:
       - kafka
       - mongo

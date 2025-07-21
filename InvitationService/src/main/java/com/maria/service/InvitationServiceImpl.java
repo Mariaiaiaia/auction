@@ -36,7 +36,7 @@ public class InvitationServiceImpl implements InvitationService {
     private final InvitationRepository invitationRepository;
     private ReactiveKafkaConsumerTemplate<String, InvitationEvent> invitationConsumerTemplate;
     private ReactiveKafkaProducerTemplate<String, AcceptanceEvent> acceptanceProducerTemplate;
-    @Value("${bootstrap-servers-config}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServersConfig;
     @Value("${kafka-group-id.invitation}")
     private String kafkaInvitationGroup;

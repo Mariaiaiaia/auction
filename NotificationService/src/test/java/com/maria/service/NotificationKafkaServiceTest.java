@@ -45,11 +45,11 @@ public class NotificationKafkaServiceTest {
     private NotificationService notificationService;
     private ReactiveKafkaProducerTemplate<String, Notification> notificationProducerTemplate;
     private ReactiveKafkaProducerTemplate<String, AuctionItemEvent> removeAuctionProducerTemplate;
-    private static final KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+    private static final KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"));
 
     public <T>ReactiveKafkaProducerTemplate<String, T> createReactiveKafkaProducerTemplate(){
         Map<String, Object> producerProps = new HashMap<>();
-        producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaContainer.getBootstrapServers());
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.springframework.kafka.support.serializer.JsonSerializer");
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.springframework.kafka.support.serializer.JsonSerializer");
 

@@ -32,7 +32,7 @@ import java.util.Map;
 public class NotificationKafkaService {
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
-    @Value("${bootstrap-servers-config}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServersConfig;
     @Value("${key-deserializer-class-config}")
     private String keyDeserializer;

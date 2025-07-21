@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ public class NotificationHandlerTest {
     @BeforeAll
     void setUp() {
         notificationWebClient = WebTestClient.bindToServer()
+                .responseTimeout(Duration.ofSeconds(120))
                 .baseUrl("http://localhost:8086")
                 .build();
     }

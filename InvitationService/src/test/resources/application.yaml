@@ -43,4 +43,3 @@ logging:
 
 kafka-group-id:
   invitation: invitation-consumer-group
-bootstrap-servers-config: localhost:9092
