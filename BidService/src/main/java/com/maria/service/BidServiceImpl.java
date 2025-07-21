@@ -38,7 +38,7 @@ public class BidServiceImpl implements BidService {
     private final BidRepository bidRepository;
     private ReactiveKafkaProducerTemplate<String, NewBitEvent> producerTemplate;
     private final WebClient webClient;
-    @Value("${bootstrap-servers-config}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServersConfig;
     @Value("${kafka-group-id.auction}")
     private String kafkaAuctionGroup;

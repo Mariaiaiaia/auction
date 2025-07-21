@@ -38,7 +38,6 @@ logging:
 url:
   auction-service: http://auctionservice:8084
 
-bootstrap-servers-config: localhost:9092
 kafka-group-id:
   auction: auction-consumer-group
 uri:

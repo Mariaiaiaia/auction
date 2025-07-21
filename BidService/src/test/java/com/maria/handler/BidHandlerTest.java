@@ -17,6 +17,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,7 @@ public class BidHandlerTest {
     @BeforeAll
     void setUp() {
         bidWebTestClient = WebTestClient.bindToServer()
+                .responseTimeout(Duration.ofSeconds(120))
                 .baseUrl("http://localhost:8087")
                 .build();
     }
