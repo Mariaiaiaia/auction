@@ -50,7 +50,7 @@ public class BidServiceTest {
     private BidService bidService;
     @Autowired
     private DatabaseClient databaseClient;
-    private static final KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+    private static final KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"));
 
 
     public <T> ReactiveKafkaProducerTemplate<String, T> createReactiveKafkaProducerTemplate() {
