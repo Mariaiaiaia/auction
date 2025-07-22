@@ -42,4 +42,4 @@ logging:
         r2dbc: DEBUG
 
 kafka-group-id:
-  invitation: invitation-consumer-group
+  invitation: test-invitation-consumer-group

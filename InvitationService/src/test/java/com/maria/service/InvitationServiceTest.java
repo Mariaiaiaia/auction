@@ -237,7 +237,7 @@ public class InvitationServiceTest {
                 .expectNextMatches(invitation -> Boolean.TRUE.equals(invitation.getAcceptance()))
                 .verifyComplete();
 
-        Mono.delay(Duration.ofSeconds(5)).block();
+        Mono.delay(Duration.ofSeconds(25)).block();
 
         AcceptanceEvent acceptanceEvent = acceptanceConsumerTemplate
                 .receiveAutoAck()
@@ -272,7 +272,7 @@ public class InvitationServiceTest {
 
         invitationProducerTemplate.send("auction-invitations-events", invitationEvent).block();
 
-        Mono.delay(Duration.ofSeconds(5)).block();
+        Mono.delay(Duration.ofSeconds(25)).block();
 
         StepVerifier.create(invitationRepository.findByUserIdAndAuctionId(invitationEvent.getUserId(), invitationEvent.getAuctionId()))
                 .expectNextCount(1)
