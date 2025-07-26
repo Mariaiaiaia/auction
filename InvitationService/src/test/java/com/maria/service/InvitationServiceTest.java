@@ -45,8 +45,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
 @SpringBootTest(classes = InvitationServiceApplication.class)
 public class InvitationServiceTest {
-    private ReactiveKafkaConsumerTemplate<String, InvitationEvent> invitationConsumerTemplate;
-    private ReactiveKafkaProducerTemplate<String, AcceptanceEvent> acceptanceProducerTemplate;
     private ReactiveKafkaConsumerTemplate<String, AcceptanceEvent> acceptanceConsumerTemplate;
     private ReactiveKafkaProducerTemplate<String, InvitationEvent> invitationProducerTemplate;
     @Autowired
@@ -77,6 +75,7 @@ public class InvitationServiceTest {
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.springframework.kafka.support.serializer.JsonDeserializer");
         consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, targetType.getName());
+        consumerProps.put("auto.offset.reset", "earliest");
 
         ReceiverOptions<String, T> receiverOptions = ReceiverOptions.<String, T>create(consumerProps)
                 .subscription(Collections.singleton(topic));
@@ -93,9 +92,7 @@ public class InvitationServiceTest {
 
     @BeforeEach
     private void setup() {
-        this.acceptanceProducerTemplate = createReactiveKafkaProducerTemplate();
         this.invitationProducerTemplate = createReactiveKafkaProducerTemplate();
-        this.invitationConsumerTemplate = createReactiveKafkaConsumerTemplate("auction-invitations-events", InvitationEvent.class, "invitation-consumer-group");
         this.acceptanceConsumerTemplate = createReactiveKafkaConsumerTemplate("acceptance-events", AcceptanceEvent.class, "acceptance-consumer-group");
 
         invitationRepository.deleteAll().block();
@@ -114,7 +111,7 @@ public class InvitationServiceTest {
 
     @DynamicPropertySource
     public static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
+        //registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
         registry.add("spring.r2dbc.url",
                 () -> "r2dbc:postgresql://" + POSTGRESQL_CONTAINER.getHost() +
                         ":" + POSTGRESQL_CONTAINER.getMappedPort(5432) + "/testdb");
@@ -237,12 +234,14 @@ public class InvitationServiceTest {
                 .expectNextMatches(invitation -> Boolean.TRUE.equals(invitation.getAcceptance()))
                 .verifyComplete();
 
-        Mono.delay(Duration.ofSeconds(25)).block();
+
+        Mono.delay(Duration.ofSeconds(5)).block();
 
         AcceptanceEvent acceptanceEvent = acceptanceConsumerTemplate
                 .receiveAutoAck()
                 .map(ConsumerRecord::value)
                 .blockFirst();
+
 
         assertNotNull(acceptanceEvent);
         assertEquals(103L, acceptanceEvent.getAuctionId());
@@ -272,7 +271,7 @@ public class InvitationServiceTest {
 
         invitationProducerTemplate.send("auction-invitations-events", invitationEvent).block();
 
-        Mono.delay(Duration.ofSeconds(25)).block();
+        Mono.delay(Duration.ofSeconds(5)).block();
 
         StepVerifier.create(invitationRepository.findByUserIdAndAuctionId(invitationEvent.getUserId(), invitationEvent.getAuctionId()))
                 .expectNextCount(1)
