@@ -208,7 +208,7 @@ public class InvitationServiceTest {
                 .expectBody()
                 .json("[]");
     }
-*/
+
     @Test
     void respondToInvitation_SuccessInvitationUpdates() {
         AcceptanceRequest acceptanceRequest = new AcceptanceRequest(103L, true);
@@ -249,7 +249,8 @@ public class InvitationServiceTest {
         assertEquals(1L, acceptanceEvent.getUserId());
         assertTrue(acceptanceEvent.isAcceptance());
     }
-/*
+    */
+
     @Test
     void respondToInvitation_ReturnInvitationNotExistException() {
         AcceptanceRequest acceptanceRequest = new AcceptanceRequest(99L, true);
@@ -278,5 +279,5 @@ public class InvitationServiceTest {
                 .expectNextCount(1)
                 .verifyComplete();
     }
-    */
+
 }
