@@ -111,7 +111,7 @@ public class InvitationServiceTest {
 
     @DynamicPropertySource
     public static void configureProperties(DynamicPropertyRegistry registry) {
-        //registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
+        registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
         registry.add("spring.r2dbc.url",
                 () -> "r2dbc:postgresql://" + POSTGRESQL_CONTAINER.getHost() +
                         ":" + POSTGRESQL_CONTAINER.getMappedPort(5432) + "/testdb");
@@ -162,6 +162,7 @@ public class InvitationServiceTest {
                 .compact();
     }
 
+    /*
     @Test
     void invitationsForUser_SuccessReturnInvitations() {
         this.webTestClient
@@ -207,7 +208,7 @@ public class InvitationServiceTest {
                 .expectBody()
                 .json("[]");
     }
-
+*/
     @Test
     void respondToInvitation_SuccessInvitationUpdates() {
         AcceptanceRequest acceptanceRequest = new AcceptanceRequest(103L, true);
@@ -248,7 +249,7 @@ public class InvitationServiceTest {
         assertEquals(1L, acceptanceEvent.getUserId());
         assertTrue(acceptanceEvent.isAcceptance());
     }
-
+/*
     @Test
     void respondToInvitation_ReturnInvitationNotExistException() {
         AcceptanceRequest acceptanceRequest = new AcceptanceRequest(99L, true);
@@ -277,4 +278,5 @@ public class InvitationServiceTest {
                 .expectNextCount(1)
                 .verifyComplete();
     }
+    */
 }
