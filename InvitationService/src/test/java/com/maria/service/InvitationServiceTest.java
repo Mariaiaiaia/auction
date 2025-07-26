@@ -162,7 +162,7 @@ public class InvitationServiceTest {
                 .compact();
     }
 
-    /*
+
     @Test
     void invitationsForUser_SuccessReturnInvitations() {
         this.webTestClient
@@ -249,7 +249,6 @@ public class InvitationServiceTest {
         assertEquals(1L, acceptanceEvent.getUserId());
         assertTrue(acceptanceEvent.isAcceptance());
     }
-    */
 
     @Test
     void respondToInvitation_ReturnInvitationNotExistException() {
