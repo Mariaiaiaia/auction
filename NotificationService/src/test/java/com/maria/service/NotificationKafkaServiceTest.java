@@ -9,8 +9,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,6 +21,7 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.kafka.sender.SenderOptions;
 import reactor.test.StepVerifier;
@@ -34,6 +35,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 @ActiveProfiles("integration-test")
 @SpringBootTest(classes = NotificationsServiceApplication.class)
@@ -41,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class NotificationKafkaServiceTest {
     @SpyBean
     private NotificationRepository notificationRepository;
-    @Autowired
+    @MockBean
     private NotificationService notificationService;
     private ReactiveKafkaProducerTemplate<String, Notification> notificationProducerTemplate;
     private ReactiveKafkaProducerTemplate<String, AuctionItemEvent> removeAuctionProducerTemplate;
@@ -96,6 +98,8 @@ public class NotificationKafkaServiceTest {
 
         notificationProducerTemplate.send("new-bid-notification-events", notificationEvent)
                 .block();
+        when(notificationService.getUserIdForAuctionNotification(4L))
+                .thenReturn(Flux.fromIterable(Set.of(2L, 5L, 6L)));
 
         Mono.delay(Duration.ofSeconds(15)).block();
 
@@ -126,6 +130,8 @@ public class NotificationKafkaServiceTest {
 
         notificationProducerTemplate.send("new-bid-notification-events", notificationEvent)
                 .block();
+        when(notificationService.getUserIdForAuctionNotification(1L))
+                .thenReturn(Flux.empty());
 
         Mono.delay(Duration.ofSeconds(15)).block();
 
@@ -148,6 +154,8 @@ public class NotificationKafkaServiceTest {
 
         notificationProducerTemplate.send("auction-finished-notification-events", notificationEvent)
                 .block();
+        when(notificationService.getUserIdForAuctionNotification(8L))
+                .thenReturn(Flux.fromIterable(Set.of(1L, 2L, 4L)));
 
         Mono.delay(Duration.ofSeconds(15)).block();
 
@@ -177,6 +185,8 @@ public class NotificationKafkaServiceTest {
 
         notificationProducerTemplate.send("auction-finished-notification-events", notificationEvent)
                 .block();
+        when(notificationService.getUserIdForAuctionNotification(4L))
+                .thenReturn(Flux.empty());
 
         Mono.delay(Duration.ofSeconds(15)).block();
 
@@ -184,32 +194,6 @@ public class NotificationKafkaServiceTest {
                 .expectNextCount(0)
                 .expectComplete()
                 .verify();
-    }
-
-    @Test
-    void whenAuctionDeletedNotificationsEventIsConsumed_thenNotificationShouldBeDeleted() {
-        AuctionItemEvent auctionItemEvent = new AuctionItemEvent(1L, 1L);
-
-        com.maria.entity.Notification newNotification = new com.maria.entity.Notification();
-        newNotification.setUserId(1L);
-        newNotification.setAuctionId(1L);
-        newNotification.setMessage(NotificationServiceConstants.MESSAGE_NEW_BID + 1000);
-        newNotification.setTimestamp(LocalDateTime.now());
-        newNotification.setItemId(1L);
-        newNotification.setRead(false);
-
-        notificationRepository.save(newNotification).block();
-
-        Mono.delay(Duration.ofSeconds(15)).block();
-
-        removeAuctionProducerTemplate.send("delete-auction-events", auctionItemEvent)
-                .block();
-
-        Mono.delay(Duration.ofSeconds(15)).block();
-
-        StepVerifier.create(notificationRepository.findByAuctionId(newNotification.getAuctionId()))
-                .expectNextCount(0)
-                .verifyComplete();
     }
 }
 

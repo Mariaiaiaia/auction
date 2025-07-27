@@ -33,6 +33,6 @@ bootstrap-servers-config: kafka:9092
 key-deserializer-class-config: org.apache.kafka.common.serialization.StringDeserializer
 value-deserializer-class-config: org.springframework.kafka.support.serializer.JsonDeserializer
 kafka-group-id:
-  notification: notification-group
-  auction: auction-consumer-group
+  notification: notification-test-notification-group
+  auction: notification-test-auction-consumer-group
 

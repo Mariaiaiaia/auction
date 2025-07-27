@@ -28,7 +28,7 @@ import java.util.Map;
 @Testcontainers
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = UserMicroserviceApplication.class)
-public class UserHandlerTest extends TestContainerConfig {
+public class UserServiceTest extends TestContainerConfig {
     @Autowired
     private UserRepository userRepository;
     @Autowired
