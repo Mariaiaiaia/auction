@@ -4,10 +4,10 @@ spring:
       mode: always
   cloud:
     aws:
+      s3:
+        enabled: false
       region:
         static: eu-north-1
-      s3:
-        endpoint: http://localstack:4566
       credentials:
         access-key: test
         secret-key: test
