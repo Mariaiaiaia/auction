@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -216,9 +217,15 @@ public class ItemHandlerTest extends TestContainerConfig {
         Files.write(tempFile, "test-image-content".getBytes());
 
         MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
-        bodyBuilder.part("file", new FileSystemResource(tempFile.toFile()));
-        bodyBuilder.part("itemName", "Test Item");
-        bodyBuilder.part("itemDescription", "This is a test description");
+        bodyBuilder.part("image", new ByteArrayResource("test-image-content".getBytes(StandardCharsets.UTF_8)) {
+            @Override
+            public String getFilename() {
+                return "test.png";
+            }
+        });
+        //bodyBuilder.part("file", new FileSystemResource(tempFile.toFile()));
+        //bodyBuilder.part("itemName", "Test Item");
+        //bodyBuilder.part("itemDescription", "This is a test description");
 
         doReturn(Mono.error(new DatabaseOperationException(ItemServiceConstants.EX_FAIL_GET_ITEM)))
                 .when(itemRepository)
