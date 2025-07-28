@@ -137,7 +137,15 @@ jobs:
           docker-compose -f docker-compose.yaml build 
           docker-compose -f docker-compose.yaml up -d
           sleep 100
-          
+
+      - name: Create S3 bucket
+        run: |
+          aws --endpoint-url=http://localhost:4566 s3 mb s3://auction-item
+          aws --endpoint-url=http://localhost:4566 s3 ls
+        env:
+         AWS_ACCESS_KEY_ID: test
+         AWS_SECRET_ACCESS_KEY: test
+         AWS_DEFAULT_REGION: eu-north-1
 
       - name: Run API tests
         run: |

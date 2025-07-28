@@ -17,7 +17,7 @@ public class S3Config {
                 .endpointOverride(URI.create("http://localhost:4566"))
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create("test", "test")))
-                .region(Region.US_EAST_1)
+                .region(Region.EU_NORTH_1)
                 .build();
     }
 }
