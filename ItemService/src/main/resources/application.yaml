@@ -34,15 +34,15 @@ logging:
         r2dbc: DEBUG
 kafka-group-id:
   auction: auction-consumer-group
-cloud:
-  aws:
-    region:
-      static: eu-north-1
-    s3:
-      endpoint: http://localstack:4566
-    credentials:
-      access-key: test
-      secret-key: test
+  cloud:
+    aws:
+      region:
+        static: eu-north-1
+      s3:
+        endpoint: http://localstack:4566
+      credentials:
+        access-key: test
+        secret-key: test
 
 s3:
   bucket:

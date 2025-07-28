@@ -62,11 +62,12 @@ public class ItemHandlerTest extends TestContainerConfig {
                     .withEnv("AWS_DEFAULT_REGION", "eu-north-1");
 
     @DynamicPropertySource
-    static void registerAwsProperties(DynamicPropertyRegistry registry) {
+    static void configureProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.cloud.aws.credentials.access-key", localstack::getAccessKey);
         registry.add("spring.cloud.aws.credentials.secret-key", localstack::getSecretKey);
-        registry.add("spring.cloud.aws.s3.region", localstack::getRegion);
-        registry.add("cloud.aws.s3.endpoint", () -> localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString());
+        registry.add("spring.cloud.aws.region.static", localstack::getRegion);
+        registry.add("spring.cloud.aws.s3.endpoint",
+                () -> localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString());
     }
 
     @BeforeEach
