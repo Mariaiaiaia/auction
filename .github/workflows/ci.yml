@@ -98,6 +98,7 @@ jobs:
           cd BidService && mvn verify -Dtest=*ServiceTest && cd ..
           cd InvitationService && mvn verify -Dtest=*ServiceTest && cd ..
           cd NotificationService && mvn verify -Dtest=*ServiceTest && cd ..
+          cd UserService && mvn verify -Dtest=*ServiceTest && cd ..
   
 
   api-tests:
@@ -146,6 +147,8 @@ jobs:
           cd AuctionService && mvn verify -Dtest=*HandlerTest && cd ..
           cd BidService && mvn verify -Dtest=*HandlerTest && cd ..
           cd NotificationService && mvn verify -Dtest=*HandlerTest && cd ..
+          cd SecurityService && mvn verify -Dtest=*HandlerTest && cd ..
+          cd ItemService && mvn verify -Dtest=*HandlerTest && cd ..
 
       - name: Stop services
         if: always()

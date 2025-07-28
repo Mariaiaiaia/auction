@@ -1,4 +1,4 @@
-package com.maria.handler;
+package com.maria.service;
 
 import com.maria.UserMicroserviceApplication;
 import com.maria.config.TestContainerConfig;

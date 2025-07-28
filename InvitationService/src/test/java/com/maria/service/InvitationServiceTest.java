@@ -36,9 +36,11 @@ import reactor.core.publisher.Mono;
 import reactor.kafka.receiver.ReceiverOptions;
 import reactor.kafka.sender.SenderOptions;
 import reactor.test.StepVerifier;
+
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureWebTestClient
@@ -111,7 +113,7 @@ public class InvitationServiceTest {
 
     @DynamicPropertySource
     public static void configureProperties(DynamicPropertyRegistry registry) {
-        //registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
+        registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
         registry.add("spring.r2dbc.url",
                 () -> "r2dbc:postgresql://" + POSTGRESQL_CONTAINER.getHost() +
                         ":" + POSTGRESQL_CONTAINER.getMappedPort(5432) + "/testdb");
