@@ -179,6 +179,7 @@ public class ItemHandlerTest extends TestContainerConfig {
                 .jsonPath("$.error").isEqualTo(ItemServiceConstants.EX_FAIL_GET_ITEM);
     }
 
+
     @Test
     void createItem_ReturnItemDto() throws IOException {
         String token = generateToken(1L, "user");
