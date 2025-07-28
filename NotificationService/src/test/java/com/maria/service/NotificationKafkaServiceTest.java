@@ -69,6 +69,7 @@ public class NotificationKafkaServiceTest {
     @DynamicPropertySource
     public static void kafkaProp(DynamicPropertyRegistry registry){
         registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
     }
 
     @Container
