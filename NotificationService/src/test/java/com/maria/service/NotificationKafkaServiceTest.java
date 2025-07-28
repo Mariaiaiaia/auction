@@ -71,18 +71,19 @@ public class NotificationKafkaServiceTest {
         registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
     }
 
+    @Container
+    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:6.0");
+
     @BeforeAll
-    static void startKafka() {
+    static void startContainers() {
         kafkaContainer.start();
+        mongoDBContainer.start();
     }
 
     @AfterAll
     static void stopKafka() {
         kafkaContainer.stop();
     }
-
-    @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:6.0");
 
     @Test
     void whenNewBidNotificationEventIsConsumed_thenNotificationShouldBeSaved(){
