@@ -21,6 +21,8 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.r2dbc.core.DatabaseClient;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.testcontainers.containers.localstack.LocalStackContainer;
@@ -60,12 +62,13 @@ public class ItemServiceTest extends TestContainerConfig {
                     .withServices(LocalStackContainer.Service.S3)
                     .withEnv("AWS_DEFAULT_REGION", "eu-north-1");
 
-    @BeforeAll
-    static void beforeAll() {
-        System.setProperty("spring.cloud.aws.credentials.access-key", localstack.getAccessKey());
-        System.setProperty("spring.cloud.aws.credentials.secret-key", localstack.getSecretKey());
-        System.setProperty("spring.cloud.aws.s3.region", localstack.getRegion());
-        System.setProperty("cloud.aws.s3.endpoint", localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString());
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.cloud.aws.credentials.access-key", localstack::getAccessKey);
+        registry.add("spring.cloud.aws.credentials.secret-key", localstack::getSecretKey);
+        registry.add("spring.cloud.aws.region.static", localstack::getRegion);
+        registry.add("spring.cloud.aws.s3.endpoint", () ->
+                localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString());
     }
 
     @BeforeEach
