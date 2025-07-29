@@ -18,6 +18,15 @@ spring:
     r2dbc:
       repositories:
         enabled: true
+  cloud:
+    aws:
+      region:
+        static: eu-north-1
+      s3:
+        endpoint: http://localstack:4566
+      credentials:
+        access-key: test
+        secret-key: test
 jwt:
   secret: 9be5fa455defebc4c61d0d9c84cf87928741050cb1e6ff9278912648e9d5419d
   expiration: 3600
@@ -34,15 +43,6 @@ logging:
         r2dbc: DEBUG
 kafka-group-id:
   auction: auction-consumer-group
-  cloud:
-    aws:
-      region:
-        static: eu-north-1
-      s3:
-        endpoint: http://localstack:4566
-      credentials:
-        access-key: test
-        secret-key: test
 
 s3:
   bucket:

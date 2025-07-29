@@ -1,4 +1,4 @@
-package com.maria.handler;
+package com.maria.service;
 
 import com.maria.ItemMicroserviceApplication;
 import com.maria.config.TestContainerConfig;
@@ -9,6 +9,7 @@ import com.maria.exception.DatabaseOperationException;
 import com.maria.repository.ItemRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.r2dbc.core.DatabaseClient;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.testcontainers.containers.localstack.LocalStackContainer;
@@ -46,7 +44,7 @@ import static org.mockito.Mockito.doReturn;
 @Testcontainers
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ItemMicroserviceApplication.class)
-public class ItemHandlerTest extends TestContainerConfig {
+public class ItemServiceTest extends TestContainerConfig {
     @SpyBean
     private ItemRepository itemRepository;
     @Autowired
@@ -62,13 +60,12 @@ public class ItemHandlerTest extends TestContainerConfig {
                     .withServices(LocalStackContainer.Service.S3)
                     .withEnv("AWS_DEFAULT_REGION", "eu-north-1");
 
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.cloud.aws.credentials.access-key", localstack::getAccessKey);
-        registry.add("spring.cloud.aws.credentials.secret-key", localstack::getSecretKey);
-        registry.add("spring.cloud.aws.region.static", localstack::getRegion);
-        registry.add("spring.cloud.aws.s3.endpoint",
-                () -> localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString());
+    @BeforeAll
+    static void beforeAll() {
+        System.setProperty("spring.cloud.aws.credentials.access-key", localstack.getAccessKey());
+        System.setProperty("spring.cloud.aws.credentials.secret-key", localstack.getSecretKey());
+        System.setProperty("spring.cloud.aws.s3.region", localstack.getRegion());
+        System.setProperty("cloud.aws.s3.endpoint", localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString());
     }
 
     @BeforeEach
@@ -180,7 +177,6 @@ public class ItemHandlerTest extends TestContainerConfig {
                 .jsonPath("$.error").isEqualTo(ItemServiceConstants.EX_FAIL_GET_ITEM);
     }
 
-
     @Test
     void createItem_ReturnItemDto() throws IOException {
         String token = generateToken(1L, "user");
@@ -217,15 +213,9 @@ public class ItemHandlerTest extends TestContainerConfig {
         Files.write(tempFile, "test-image-content".getBytes());
 
         MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
-        bodyBuilder.part("image", new ByteArrayResource("test-image-content".getBytes(StandardCharsets.UTF_8)) {
-            @Override
-            public String getFilename() {
-                return "test.png";
-            }
-        });
-        //bodyBuilder.part("file", new FileSystemResource(tempFile.toFile()));
-        //bodyBuilder.part("itemName", "Test Item");
-        //bodyBuilder.part("itemDescription", "This is a test description");
+        bodyBuilder.part("file", new FileSystemResource(tempFile.toFile()));
+        bodyBuilder.part("itemName", "Test Item");
+        bodyBuilder.part("itemDescription", "This is a test description");
 
         doReturn(Mono.error(new DatabaseOperationException(ItemServiceConstants.EX_FAIL_GET_ITEM)))
                 .when(itemRepository)
