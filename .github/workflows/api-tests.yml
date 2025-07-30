@@ -1,0 +1,48 @@
+name: API Tests
+
+on:
+  workflow_call:
+    secrets: inherit
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    needs: build
+
+    services:
+      docker:
+        image: docker:20.10.16-dind
+        options: --privileged
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        run: |
+          curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+
+      - name: Download JARs
+        uses: actions/download-artifact@v4
+        with:
+          name: jars
+          path: .
+
+      - name: Start services with docker-compose
+        run: |
+          docker-compose -f docker-compose.yaml build 
+          docker-compose -f docker-compose.yaml up -d
+          sleep 100
+
+      - name: Run API tests
+        run: |
+          export TZ=Asia/Jerusalem
+          docker-compose logs
+          cd core && mvn clean install -DskipTests && cd ..
+          for d in AuctionService BidService NotificationService SecurityService GatewayService; do
+            cd $d && mvn verify -Dtest=*HandlerTest && cd ..
+          done
+
+      - name: Stop services
+        if: always()
+        run: docker-compose down

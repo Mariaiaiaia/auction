@@ -1,0 +1,33 @@
+name: Service Tests
+
+on:
+  workflow_call:
+    secrets: inherit
+
+jobs:
+  service-tests:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Restore Maven cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
+
+      - name: Run service tests
+        run: |
+          cd core && mvn install -DskipTests && cd ..
+          for d in AuctionService BidService InvitationService NotificationService UserService ItemService; do
+            cd $d && mvn verify -Dtest=*ServiceTest && cd ..
+          done
