@@ -6,7 +6,6 @@ on:
 jobs:
   api-tests:
     runs-on: ubuntu-latest
-    needs: build
 
     services:
       docker:
