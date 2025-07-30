@@ -9,26 +9,22 @@ import com.maria.exception.DatabaseOperationException;
 import com.maria.repository.ItemRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.r2dbc.core.DatabaseClient;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.testcontainers.containers.localstack.LocalStackContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -41,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 
 @Testcontainers
@@ -55,26 +52,12 @@ public class ItemServiceTest extends TestContainerConfig {
     private DatabaseClient databaseClient;
     @Value("${jwt.secret}")
     private String jwtSecret;
-
-    @Container
-    static LocalStackContainer localstack =
-            new LocalStackContainer(DockerImageName.parse("localstack/localstack:3.0"))
-                    .withServices(LocalStackContainer.Service.S3)
-                    .withEnv("AWS_DEFAULT_REGION", "eu-north-1");
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.cloud.aws.credentials.access-key", localstack::getAccessKey);
-        registry.add("spring.cloud.aws.credentials.secret-key", localstack::getSecretKey);
-        registry.add("spring.cloud.aws.region.static", localstack::getRegion);
-        registry.add("spring.cloud.aws.s3.endpoint", () ->
-                localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString());
-    }
+    @MockBean
+    private S3Service s3Service;
 
     @BeforeEach
-    void setup() {
+    void setupp() {
         itemRepository.deleteAll().block();
-
         databaseClient.sql("ALTER SEQUENCE item_id_seq RESTART WITH 1")
                 .fetch().rowsUpdated().block();
 
@@ -86,6 +69,9 @@ public class ItemServiceTest extends TestContainerConfig {
                     ('Bike', 'Used mountain bike', 'image3.jpg', TRUE, 3, 1)
                     ON CONFLICT (id) DO NOTHING;
                 """).fetch().rowsUpdated().block();
+
+        Mockito.when(s3Service.uploadDataToS3(anyString(), anyString(), any()))
+                .thenReturn(Mono.just("https://fake-url"));
     }
 
     public String generateToken(Long userId, String userRole) {

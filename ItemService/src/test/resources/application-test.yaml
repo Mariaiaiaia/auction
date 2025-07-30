@@ -2,15 +2,8 @@ spring:
   sql:
     init:
       mode: always
-  cloud:
-    aws:
-      s3:
-        endpoint: http://localstack:4566
-      region:
-        static: eu-north-1
-      credentials:
-        access-key: test
-        secret-key: test
+  main:
+    allow-bean-definition-overriding: true
 logging:
   level:
     org:
