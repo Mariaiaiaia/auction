@@ -94,6 +94,11 @@ jobs:
       - name: Run service tests
         run: |
           cd core && mvn install -DskipTests && cd ..
+          cd AuctionService && mvn verify -Dtest=*ServiceTest && cd ..
+          cd BidService && mvn verify -Dtest=*ServiceTest && cd ..
+          cd InvitationService && mvn verify -Dtest=*ServiceTest && cd ..
+          cd NotificationService && mvn verify -Dtest=*ServiceTest && cd ..
+          cd UserService && mvn verify -Dtest=*ServiceTest && cd ..
           cd ItemService && mvn verify -Dtest=*ServiceTest && cd ..
   
 
@@ -147,6 +152,7 @@ jobs:
           cd BidService && mvn verify -Dtest=*HandlerTest && cd ..
           cd NotificationService && mvn verify -Dtest=*HandlerTest && cd ..
           cd SecurityService && mvn verify -Dtest=*HandlerTest && cd ..
+          cd GatewayService && mvn verify -Dtest=*HandlerTest && cd ..
 
       - name: Stop services
         if: always()
