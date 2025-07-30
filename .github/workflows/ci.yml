@@ -152,7 +152,7 @@ jobs:
           cd BidService && mvn verify -Dtest=*HandlerTest && cd ..
           cd NotificationService && mvn verify -Dtest=*HandlerTest && cd ..
           cd SecurityService && mvn verify -Dtest=*HandlerTest && cd ..
-          cd GatewayService && mvn verify -Dtest=*HandlerTest && cd ..
+          cd GatewayService && mvn verify -Dtest=*ServiceTest && cd ..
 
       - name: Stop services
         if: always()
