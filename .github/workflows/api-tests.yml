@@ -35,11 +35,17 @@ jobs:
       - name: Run API tests
         run: |
           export TZ=Asia/Jerusalem
-          docker-compose logs
+          docker ps -a
+          docker compose -f ./docker-compose.yaml ps
+          docker logs kafka || true
+          docker logs auction-zookeeper-1 || true
+          docker-compose logs auctionservice
           cd core && mvn clean install -DskipTests && cd ..
-          for d in AuctionService BidService NotificationService SecurityService GatewayService; do
-            cd $d && mvn verify -Dtest=*HandlerTest && cd ..
-          done
+          cd AuctionService && mvn verify -Dtest=*HandlerTest && cd ..
+          cd BidService && mvn verify -Dtest=*HandlerTest && cd ..
+          cd NotificationService && mvn verify -Dtest=*HandlerTest && cd ..
+          cd SecurityService && mvn verify -Dtest=*HandlerTest && cd ..
+          cd GatewayService && mvn verify -Dtest=*ServiceTest && cd ..
 
       - name: Stop services
         if: always()
