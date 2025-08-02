@@ -61,6 +61,13 @@ kafka-group-id:
   bid: bid-consumer-group
   acceptance: acceptance-consumer-group
 
+spring-doc:
+  default-produces-media-type: application/json
+  api-docs:
+    resolve-schema-properties: false
+  swagger-ui:
+    disable-default-response-messages: true
+
 
 
 

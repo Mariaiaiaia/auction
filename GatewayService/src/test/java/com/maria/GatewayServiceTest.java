@@ -65,18 +65,6 @@ public class GatewayServiceTest {
                 .uri("/auctions/{id}", auctionId)
                 .exchange()
                 .expectStatus().isUnauthorized();
-        /*
-                .expectBody()
-                .consumeWith(response -> {
-                    byte[] content = response.getResponseBody();
-                    if (content != null) {
-                        System.out.println("Response body: " + new String(content));
-                    } else {
-                        System.out.println("Response body is null");
-                    }
-                });
-
-         */
     }
 
     @Test

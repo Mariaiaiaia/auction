@@ -3,7 +3,7 @@ services:
   zookeeper:
     image: bitnami/zookeeper:latest
     ports:
-      - "2181:2181"
+      - "2182:2181"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     healthcheck:
@@ -23,7 +23,7 @@ services:
       - KAFKA_CFG_BROKER_ID=1
       - KAFKA_ENABLE_KRAFT=no
     ports:
-      - "9092:9092"
+      - "9093:9092"
     depends_on:
       zookeeper:
         condition: service_healthy

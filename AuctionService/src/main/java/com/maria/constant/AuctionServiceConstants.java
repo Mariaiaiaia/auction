@@ -76,7 +76,7 @@ public final class AuctionServiceConstants {
     public static final String LOG_FAIL_SEND_AUCTION_CREATED_EVENT = "Failed to send auction created event for auction {}";
     public static final String LOG_AUCTION_REMOVED_EVENT_SENT = "Auction removed event sent successfully for auction {}";
     public static final String LOG_FAIL_SEND_AUCTION_REMOVED_EVENT = "Failed to send auction removed event for auction {}";
-    public static final String EX_INVALID_ID_FORMAT = "Invalid user ID format";
+    public static final String EX_INVALID_ID_FORMAT = "Invalid auction ID format";
     public static final String EX_ID_POSITIVE_NUMBER = "User ID must be not null and positive number";
     public static final String VALIDATION_STARTING_PRICE = "Starting price must be greater than 0";
     public static final String VALIDATION_START_DATE = "Start date must be in the future";

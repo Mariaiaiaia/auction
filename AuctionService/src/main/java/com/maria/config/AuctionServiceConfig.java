@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.maria.core.entity.AuctionDTO;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -114,5 +116,13 @@ public class AuctionServiceConfig {
     @Primary
     public ReactiveRedisConnectionFactory auctionReactiveRedisConnectionFactory() {
         return new LettuceConnectionFactory(redisHost, redisPort);
+    }
+
+    @Bean
+    public OpenAPI baseOpenAPI() {
+        return new OpenAPI()
+                .info(new Info().title("Auction API")
+                        .version("1.0")
+                        .description("Documentation"));
     }
 }
