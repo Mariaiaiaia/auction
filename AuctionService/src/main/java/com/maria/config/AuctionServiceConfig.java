@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.maria.core.entity.AuctionDTO;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -119,10 +121,10 @@ public class AuctionServiceConfig {
     }
 
     @Bean
-    public OpenAPI baseOpenAPI() {
+    public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("Auction API")
-                        .version("1.0")
-                        .description("Documentation"));
+                .components(new Components())
+                .info(new Info().title("Auction API"))
+                .paths(new Paths());
     }
 }

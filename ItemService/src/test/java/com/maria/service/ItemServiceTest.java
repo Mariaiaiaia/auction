@@ -56,7 +56,7 @@ public class ItemServiceTest extends TestContainerConfig {
     private S3Service s3Service;
 
     @BeforeEach
-    void setupp() {
+    void setup() {
         itemRepository.deleteAll().block();
         databaseClient.sql("ALTER SEQUENCE item_id_seq RESTART WITH 1")
                 .fetch().rowsUpdated().block();

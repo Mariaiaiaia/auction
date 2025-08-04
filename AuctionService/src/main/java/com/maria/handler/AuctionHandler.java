@@ -39,7 +39,8 @@ public class AuctionHandler {
     }
 
     public Mono<ServerResponse> sendInvitationToUser(ServerRequest request) {
-        return request.bodyToMono(new ParameterizedTypeReference<List<String>>() {})
+        return request.bodyToMono(new ParameterizedTypeReference<List<String>>() {
+                })
                 .flatMap(invitedUserEmails ->
                         ReactiveSecurityContextHolder.getContext()
                                 .map(SecurityContext::getAuthentication)

@@ -21,8 +21,7 @@ public class UserRouter {
                 .andRoute(PATCH(UserServiceRouterConstants.UPDATE_USER).and(accept(MediaType.APPLICATION_JSON)), userHandler::update)
                 .andRoute(DELETE(UserServiceRouterConstants.DELETE_USER).and(accept(MediaType.APPLICATION_JSON)), userHandler::delete)
                 .andRoute(GET(UserServiceRouterConstants.FIND_USER_BY_EMAIL).and(accept(MediaType.APPLICATION_JSON))
-                                .and(request -> "true".equals(request.headers().firstHeader("X-Internal-Service"))),
-                        userHandler::findUserByEmail)
+                                .and(request -> "true".equals(request.headers().firstHeader("X-Internal-Service"))), userHandler::findUserByEmail)
                 .andRoute(POST(UserServiceRouterConstants.REGISTER).and(accept(MediaType.APPLICATION_JSON)), userHandler::register);
     }
 }

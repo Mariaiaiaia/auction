@@ -1,4 +1,4 @@
-package com.maria.dto;
+package com.maria.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

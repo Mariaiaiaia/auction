@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
@@ -42,7 +43,6 @@ public class AuctionHandlerTest {
                 .baseUrl("http://localhost:8084")
                 .build();
     }
-
 
 
     public String generateToken(Long userId, String userRole) {
@@ -438,7 +438,7 @@ public class AuctionHandlerTest {
                 .expectBodyList(AuctionDTO.class)
                 .value(auctions -> {
                     assertThat(auctions).hasSize(1);
-                    assertThat(auctions).extracting("auctionId").containsExactlyInAnyOrder( 4L);
+                    assertThat(auctions).extracting("auctionId").containsExactlyInAnyOrder(4L);
                 });
     }
 
@@ -484,7 +484,7 @@ public class AuctionHandlerTest {
                 .expectBodyList(AuctionDTO.class)
                 .value(auctions -> {
                     assertThat(auctions).hasSize(2);
-                    assertThat(auctions).extracting("auctionId").containsExactlyInAnyOrder( 2L, 4L);
+                    assertThat(auctions).extracting("auctionId").containsExactlyInAnyOrder(2L, 4L);
                 });
     }
 
