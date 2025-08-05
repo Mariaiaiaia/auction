@@ -2,6 +2,10 @@ package com.maria.config;
 
 import com.maria.core.security.AuthenticationManager;
 import com.maria.core.security.SecurityContextRepository;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.info.Info;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -38,5 +42,13 @@ public class NotificationServiceConfig {
         return WebClient.builder()
                 .baseUrl(bidServiceUrl)
                 .build();
+    }
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .components(new Components())
+                .info(new Info().title("Auction API"))
+                .paths(new Paths());
     }
 }

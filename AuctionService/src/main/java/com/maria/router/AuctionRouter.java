@@ -343,9 +343,7 @@ public class AuctionRouter {
                             responses = {
                                     @ApiResponse(
                                             responseCode = "200",
-                                            description = "Auction successfully updated",
-                                            content = @Content(mediaType = "application/json",
-                                                    schema = @Schema(implementation = AuctionDTO.class))
+                                            description = "Auction successfully updated"
                                     ),
                                     @ApiResponse(
                                             responseCode = "403",

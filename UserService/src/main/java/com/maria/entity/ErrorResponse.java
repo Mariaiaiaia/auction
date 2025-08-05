@@ -1,0 +1,17 @@
+package com.maria.entity;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Error response")
+public class ErrorResponse {
+    @Schema(description = "Exception message")
+    private String errorMessage;
+
+    public ErrorResponse(String error) {
+        this.errorMessage = error;
+    }
+
+    public String getError() {
+        return errorMessage;
+    }
+}

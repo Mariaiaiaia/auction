@@ -3,6 +3,10 @@ package com.maria.config;
 import com.maria.constant.SecurityServiceRouterConstants;
 import com.maria.core.security.AuthenticationManager;
 import com.maria.core.security.SecurityContextRepository;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.info.Info;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -49,6 +53,8 @@ public class SecurityServiceConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(ServerHttpSecurity.CorsSpec::disable)
                 .authorizeExchange(auth -> {
+                    auth.pathMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+                            "/webjars/**", "/v3/api-docs.yaml").permitAll();
                     auth.pathMatchers(SecurityServiceRouterConstants.LOGIN, SecurityServiceRouterConstants.LOGOUT).permitAll();
                     auth.anyExchange().authenticated();
                 })
@@ -76,5 +82,13 @@ public class SecurityServiceConfig {
                 .value(StringRedisSerializer.UTF_8)
                 .build();
         return new ReactiveRedisTemplate<>(factory, serializationContext);
+    }
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .components(new Components())
+                .info(new Info().title("Auction API"))
+                .paths(new Paths());
     }
 }
