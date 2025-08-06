@@ -1,4 +1,4 @@
-name: API Tests
+name: Build & API Tests
 
 on:
   workflow_call:
@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  api-tests:
+  build-and-api-tests:
     runs-on: ubuntu-latest
 
     services:
@@ -15,18 +15,33 @@ jobs:
         options: --privileged
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
+
+      - name: Build services
+        run: |
+          cd core && mvn clean install -DskipTests && cd ..
+          for d in GatewayService AuctionService UserService BidService InvitationService ItemService NotificationService SecurityService; do
+            cd $d && mvn clean package -DskipTests && cd ..
+          done
 
       - name: Set up Docker Compose
         run: |
           curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
-
-      - name: Download JARs
-        uses: actions/download-artifact@v4
-        with:
-          name: jars
-          path: .
 
       - name: Start services with docker-compose
         run: |
