@@ -5,8 +5,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-build:
-    uses: ./.github/workflows/build.yml
 
   api-tests:
     runs-on: ubuntu-latest
