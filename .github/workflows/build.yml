@@ -1,6 +1,7 @@
 name: Build
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -29,9 +30,18 @@ jobs:
             cd $d && mvn clean package -DskipTests && cd ..
           done
 
-      - name: Upload JARs
+      - name: Upload all JARs as artifact
         uses: actions/upload-artifact@v4
         with:
           name: jars
           path: |
-            **/target/*.jar
+              **/target/*.jar
+
+      - name: Move JARs to services
+        run: |
+         for d in GatewayService AuctionService UserService BidService InvitationService ItemService NotificationService SecurityService; do
+         mkdir -p $d/target
+         mv $d-*.jar $d/target/ || true
+         done
+      
+      

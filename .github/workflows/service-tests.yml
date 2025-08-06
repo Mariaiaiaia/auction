@@ -2,6 +2,7 @@ name: Service Tests
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   service-tests:
