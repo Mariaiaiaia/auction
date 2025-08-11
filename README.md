@@ -49,7 +49,6 @@ Upon auction closure, notifications are sent to participants via Kafka.
 #### 🎯 Bid Service
 - **Purpose:**
 Handles bid creation, validation, and lifecycle management of bids placed by users during auctions.
-
 - **Key Features:**
   - **Bid Creation and Validation:** Validates each incoming bid according to auction rules.
   - **Bid Cleanup on Auction Deletion:** Deletes all bids related to a deleted auction upon receiving a Kafka message from the Auction Service.
@@ -86,7 +85,6 @@ Handles storage and delivery of notifications and messages.
 #### 🔐 Security Service
 - **Purpose:**
 Manages user authentication and token lifecycle.
-
 - **Key Features:**
   - **Login:** Verifies user credentials with the User Service and generates JWT tokens upon successful login.
   - **Logout:** Invalidates JWT tokens by saving them into Redis to prevent reuse.
@@ -106,7 +104,6 @@ Manages user accounts and handles user registration.
   - **JWT Validation:** Extracts the JWT token from the Authorization header.
   - **Redis Blacklist Check:** Checks if the token exists in the Redis store of invalidated tokens (e.g., after logout).
   - **Secure Forwarding:**  Forwards requests with valid tokens to downstream services.
-
 
 #### 🧩 Core (Shared Library)
 - **Purpose:**
